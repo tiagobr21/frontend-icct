@@ -1,4 +1,12 @@
 <template>
+
+       <!-- Spinner -->
+       <div v-if="loading" class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
     <div class="card h-100" >
  
       <div class="card-body">
@@ -6,7 +14,8 @@
         <h5 class="card-title"><strong><fa class="pen-icon" icon="pen"></fa> Author: </strong>{{product.nomeDoAutor}}</h5>
         <h5 class="card-title"><strong><fa class="calendar-icon" icon="calendar"></fa> Release: </strong>{{product.lancamento}}</h5>
         <h5 class="card-title"><strong><fa class="genderless-icon" icon="genderless"></fa> Gender: </strong>{{product.genero}}</h5>
-
+        <h5 class="card-title"><strong><fa class="newspaper-icon" icon="newspaper"></fa> Publi. Company: </strong>{{product.editora}}</h5>
+        
         <div v-if="role == 'admin'" id="actions-product">
           <router-link id="edit-product" :to="{name : 'editProduct', params : {id : product.id} }" >
             <fa icon="pen-square"></fa>

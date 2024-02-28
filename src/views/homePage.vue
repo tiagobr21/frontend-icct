@@ -6,18 +6,12 @@
   <main class="form-sign w-100 m-auto">
 
     
-   <!-- Exibir mensagem de erro -->
-    <div v-if="errorMessage" class="alert alert-danger" role="alert">
-            {{ errorMessage }}
-    </div>
-   
-
     <!-- Exibir mensagem de sucesso -->
 
-    <div class="welcome-container"  v-if="successMessage">
-        <h1> Bem-Vindo!  {{ successMessage }} </h1>
+    <div class="welcome-container"  >
+        <h1> Bem-Vindo!  {{ user }} </h1>
         <p>Vai ser uma honra trabalhar com você !!!</p>
-        <router-link to="/products" ><a  class="btn">Ir para os Produtos</a></router-link>
+        <router-link to="/products" ><a  class="btn">Ir para lista de Livros</a></router-link>
     </div>
 
 
@@ -40,58 +34,25 @@
              
         const successMessage = ref<string | null>('');
         const errorMessage = ref<string | null>('');
-        const url = ref<string | null>('');
+        const user = ref<string | null>('');
         const localStorageData = ref<string | null>('');
-        const token = ref<string | null>('');
+        
+
 
         onMounted( async ()=>{
+   
+          localStorageData.value = localStorage.getItem('user');
 
-
-         localStorageData.value = localStorage.getItem('token');
-
-        if(localStorageData.value != null){
-
-          token.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
-                
-          url.value= 'http://localhost/api/auth/profile';
-                
-          try{
-                  
-              const response =  await fetch(url.value, {
-                        
-              headers: { 
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token.value}`,
-                },
-              });
-
-              const profile = await response.json();
-                    
-              successMessage.value = profile[0].name; 
-             
-
-              } catch (error) {
-                
-                  console.error(error);
-                  errorMessage.value = 'Algo deu errado ou o token expirou';
-                  successMessage.value = ''; // Limpar mensagem de sucesso
-
-                } 
-         
-              
-          }else{
-
-            errorMessage.value = 'You are not logged in!';
-            successMessage.value = ''
-
+          if(localStorageData.value != null ){
+            user.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
           }
-          
+    
        });
 
        return{
         successMessage,
-        errorMessage
+        errorMessage,
+        user
        }
     }
   }

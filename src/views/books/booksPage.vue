@@ -2,6 +2,13 @@
 
    <navBar></navBar>
 
+      <!-- Spinner -->
+      <div v-if="loading" class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
    <div class="search-container">
        <input type="search" v-model="search" class="search-input" placeholder="Pesquisar...">
        <fa class="search-icon" icon="search"></fa>
@@ -111,14 +118,15 @@
             const uniqueGender = ref<string[]>([]);
             const uniqueRelease = ref<string[]>([]);
             const uniquePublishingCompany = ref<string[]>([]);
-
-
+            const loading = ref<boolean | null>(false);
+           
             onMounted( async ()=>{   
     
              localStorageData.value = localStorage.getItem('token');
 
              role.value = localStorage.getItem('role');
              
+             loading.value = true;
     
              if(localStorageData.value != null && role.value != null){
     
@@ -140,8 +148,9 @@
                   });
     
                   const data = await response.json(); 
+
+                  loading.value = false;
                   
-   
                   totalPaginas.value = Math.ceil(data.totalPages/data.per_page);
                      
                   allproducts.value = data.alldata;
@@ -182,7 +191,7 @@
                         const SelectedRelease = selectedRelease.value;  
                         const lowerCasePublishingCompany = selectedPublishingCompany.value.toLowerCase(); 
                         
-                        console.log(lowerCasePublishingCompany);
+                        // console.log(lowerCasePublishingCompany);
                         
                                 
                                 // Verifique se o nome ou a descrição do produto contém a string de pesquisa
@@ -190,8 +199,8 @@
                                 (product.nome.toLowerCase().includes(lowerCaseSearch) || product.nomeDoAutor.toLowerCase().includes(lowerCaseSearch)) &&
                                 (lowerCaseSelectedAuthor === '' || product.nomeDoAutor.toLowerCase() === lowerCaseSelectedAuthor) &&
                                 (SelectedRelease === '' || product.lancamento === SelectedRelease) &&
-                                (lowerCaseSelectedGender === '' || product.genero.toLowerCase() === lowerCaseSelectedGender) 
-                  
+                                (lowerCaseSelectedGender === '' || product.genero.toLowerCase() === lowerCaseSelectedGender) &&
+                                (lowerCasePublishingCompany === '' || product.editora.toLowerCase() === lowerCasePublishingCompany)
                                 );
                        });
             });
@@ -331,6 +340,7 @@
             goToPage,
             previousPage,
             nextPage,
+            loading,
             contador,
             search,
             filteredProducts,

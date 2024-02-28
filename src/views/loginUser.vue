@@ -107,11 +107,15 @@
                   successMessage.value = responseData.message;
                   errorMessage.value = ''; // Limpar mensagem de erro
 
+                   
+                  // console.log(responseData);
                   
                   
                   // Convertendo para formato JSON e armazenando no localStorage
+                  localStorage.setItem('user', JSON.stringify(responseData.name));
                   localStorage.setItem('token', JSON.stringify(responseData.token));
                   localStorage.setItem('role', JSON.stringify(responseData.role));
+                  
                                 
                   await router.push('/');
                   

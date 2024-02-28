@@ -5,9 +5,9 @@ import Register from '../views/registerUser.vue';
 import Categories from '../views/categories/categoriesPage.vue';
 import editCategory from '../views/categories/editCategory.vue';
 import addCategory from '../views/categories/addCategory.vue';
-import Products from '../views/products/productsPage.vue';
-import editProduct from '@/views/products/editProduct.vue';
-import addProduct from '@/views/products/addProduct.vue';
+import Products from '../views/books/booksPage.vue';
+import editProduct from '@/views/books/editBook.vue';
+import addProduct from '@/views/books/addBook.vue';
 
 const routes = [
   { path: '/', component: Home},
