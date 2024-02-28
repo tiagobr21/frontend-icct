@@ -1,12 +1,5 @@
 <template>
 
-       <!-- Spinner -->
-       <div v-if="loading" class="spinner-overlay">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-
     <div class="card h-100" >
  
       <div class="card-body">
