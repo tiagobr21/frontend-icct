@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    container_name: frontend-books
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./:/app
+    command: 'vue serve'
+    # command: 'npm run serve' # for NPM manager
