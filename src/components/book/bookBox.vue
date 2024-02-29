@@ -1,20 +1,33 @@
 <template>
 
+      <!-- Spinner -->
+      <div v-if="loading" class="spinner-overlay">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+     
+        <!-- Exibir mensagem de erro -->
+        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+      </div>
+
+
     <div class="card h-100" >
  
       <div class="card-body">
-        <h5 class="card-title"><strong> <fa class="book-icon" icon="book"></fa> Name: </strong>{{product.nome}} </h5>
-        <h5 class="card-title"><strong><fa class="pen-icon" icon="pen"></fa> Author: </strong>{{product.nomeDoAutor}}</h5>
-        <h5 class="card-title"><strong><fa class="calendar-icon" icon="calendar"></fa> Release: </strong>{{product.lancamento}}</h5>
-        <h5 class="card-title"><strong><fa class="genderless-icon" icon="genderless"></fa> Gender: </strong>{{product.genero}}</h5>
-        <h5 class="card-title"><strong><fa class="newspaper-icon" icon="newspaper"></fa> Publi. Company: </strong>{{product.editora}}</h5>
+        <h5 class="card-title"><strong> <fa class="book-icon" icon="book"></fa> Name: </strong>{{book.nome}} </h5>
+        <h5 class="card-title"><strong><fa class="pen-icon" icon="pen"></fa> Author: </strong>{{book.nomeDoAutor}}</h5>
+        <h5 class="card-title"><strong><fa class="calendar-icon" icon="calendar"></fa> Release: </strong>{{book.lancamento}}</h5>
+        <h5 class="card-title"><strong><fa class="genderless-icon" icon="genderless"></fa> Gender: </strong>{{book.genero}}</h5>
+        <h5 class="card-title"><strong><fa class="newspaper-icon" icon="newspaper"></fa> Publi. Company: </strong>{{book.editora}}</h5>
         
-        <div v-if="role == 'admin'" id="actions-product">
-          <router-link id="edit-product" :to="{name : 'editProduct', params : {id : product.id} }" >
+        <div v-if="role == 'admin'" id="actions-book">
+          <router-link id="edit-book" :to="{name : 'editBook', params : {id : book.id} }" >
             <fa icon="pen-square"></fa>
           </router-link>
-          <router-link to="/products" >
-                <div class="delete"> <fa @click="deleteProduct(product.id)" icon="trash"></fa> </div>
+          <router-link to="/books" >
+                <div class="delete"> <fa @click="deletes(book.id)" icon="trash"></fa> </div>
           </router-link >
         </div>
 
@@ -28,8 +41,8 @@
    import {ref,onMounted} from 'vue';
 
   export default {
-      name : "productBox",
-      props : ["product"],
+      name : "bookBox",
+      props : ["book"],
          
       
     setup() {
@@ -59,12 +72,12 @@
         });
 
 
-        const deleteProduct = async (id:any) =>{
+        const deletes = async (id:any) =>{
             
             
             loading.value = true; // Ativa o spinner
             
-            url.value = 'http://localhost/api/auth/produto/delete/'+id;
+            url.value = 'http://localhost:3000/books/delete/'+id;
             
             try {
 
@@ -79,24 +92,20 @@
 
                 if (response.ok) {
                     
-                    const responseData = await response.json();
-                    successMessage.value = responseData.message;
-                    errorMessage.value = ''; // Limpar mensagem de erro
-                      
+  
                     window.location.reload();
                     
                 } else {
 
                     const errorData = await response.json();
                     errorMessage.value = errorData.message;
-                    successMessage.value = ''; // Limpar mensagem de sucesso
-
+              
                 }
 
             } catch (error) {
                 
                 console.error(error);
-                errorMessage.value = 'Algo deu errado ou o token expirou';
+                errorMessage.value = 'Algo deu errado';
                 successMessage.value = ''; // Limpar mensagem de sucesso
 
             } finally {
@@ -105,11 +114,12 @@
                 loading.value = false; // Desativa o spinner
 
             }    
+            
             }
 
 
             return{
-                deleteProduct,
+                deletes,
                 errorMessage,
                 successMessage,
                 loading,
@@ -123,7 +133,7 @@
   <style scoped>
   
 
-    .delete{
+  .delete{
       color: red;
     }
   .embed-responsive .card-img-top {
@@ -155,12 +165,12 @@
     font-size: 0.9rem;
   }
   
-  #edit-product {
+  #edit-book {
     float: right;
   }
   
 
-  #actions-product {
+  #actions-book {
     float: right;
     display: block;
     margin-left: 10px;

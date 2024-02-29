@@ -16,7 +16,7 @@
         
     <div class="filters">
         <strong >Filters</strong>   
-        <button @click="sortProducts" id="sort" class="btn">Sort Alphabetically</button>
+        <button @click="sortBooks" id="sort" class="btn">Sort Alphabetically</button>
    
         <select class="form-select form-select-sm " v-model="selectedAuthor">
                   <option value="">All Authors</option>
@@ -41,12 +41,7 @@
        
     </div>  
 
-   <main v-if="errorMessage" class="form-sign w-110 m-auto">
-     <!-- Exibir mensagem de erro -->
-     <div  class="alert alert-danger" role="alert">
-           {{ errorMessage }}
-   </div>
-  </main>
+ 
 
    <div class="container">
        <div class="row">
@@ -54,8 +49,8 @@
                <h4 class="pt-3">Our Books</h4>
   
                <div v-if="role === 'admin'">
-                    <router-link  to="/product/add" >
-                        <button id="add-product" class="btn">Add a new Product</button>
+                    <router-link  to="/book/add" >
+                        <button id="add-book" class="btn">Add a new Book</button>
                     </router-link>
                </div>
 
@@ -63,13 +58,19 @@
            </div>
        </div>
 
+       <main v-if="errorMessage" class="form-sign w-110 m-auto">
+        <!-- Exibir mensagem de erro -->
+        <div  class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+      </div>
+     </main>    
 
 
        <div class="row">
-          <div v-for="product of filteredProducts" :key="product.id" class="col-md-6 col-xl-4 col-12 pt-3  justify-content-around d-flex">
+          <div v-for="book of filteredBooks" :key="book.id" class="col-md-6 col-xl-4 col-12 pt-3  justify-content-around d-flex">
            
-               <productBox :product="product">
-               </productBox>
+               <bookBox :book="book">
+               </bookBox>
            </div> 
        </div>
    </div>
@@ -86,15 +87,15 @@
 
 <script lang="ts">
 
-   import productBox from '../../components/product/productBox.vue';
+   import bookBox from '../../components/book/bookBox.vue';
    import navBar from '@/components/navBar.vue';
    import{onMounted,ref,computed } from 'vue';
 
 
    export default {
-       name: 'productsPage',
+       name: 'booksPage',
 
-       components : {navBar,productBox},
+       components : {navBar,bookBox},
      
        setup(){
             
@@ -103,8 +104,8 @@
             const url = ref<string | null>('');
             const localStorageData = ref<string | null>('');
             const token = ref<string | null>('');
-            const products = ref<any[]>([]);
-            const allproducts = ref<any[]>([]);
+            const books = ref<any[]>([]);
+            const allbooks = ref<any[]>([]);
             let totalPaginas = ref<number>(0);
             const contador = ref<number>(0);
             const data = ref<any | null>('');
@@ -153,25 +154,33 @@
                   
                   totalPaginas.value = Math.ceil(data.totalPages/data.per_page);
                      
-                  allproducts.value = data.alldata;
+                  allbooks.value = data.alldata;
                                                                  
-                  products.value = data.data;
+                  books.value = data.data;
 
-                  uniqueAuthors.value = [...new Set(allproducts.value.map((product: any) => product.nomeDoAutor))];
+                  uniqueAuthors.value = [...new Set(allbooks.value.map((book: any) => book.nomeDoAutor))];
 
-                  uniqueGender.value = [...new Set(allproducts.value.map((product: any) => product.genero))];
+                  uniqueGender.value = [...new Set(allbooks.value.map((book: any) => book.genero))];
 
-                  uniqueRelease.value = [...new Set(allproducts.value.map((product: any) => product.lancamento))];
+                  uniqueRelease.value = [...new Set(allbooks.value.map((book: any) => book.lancamento))];
 
-                  uniquePublishingCompany.value = [...new Set(allproducts.value.map((product: any) => product.editora))];
+                  uniquePublishingCompany.value = [...new Set(allbooks.value.map((book: any) => book.editora))];
               
                   } catch (error) {
                     
                       errorMessage.value = 'Algo deu errado ou o token expirou';
                       successMessage.value = ''; // Limpar mensagem de sucesso
     
-                    } 
+                  } finally {
+               
+                  loading.value = false; // Desativa o spinner
+
+               }   
              
+              }else{
+                    errorMessage.value = 'Seu token expirou faça login';
+                    successMessage.value = ''; // Limpar mensagem de sucesso
+                    loading.value = false;
               }
 
      
@@ -179,10 +188,10 @@
            });
 
 
-           const filteredProducts = computed(() => {
+           const filteredBooks = computed(() => {
                     
                        
-                       return products.value.filter((product: any) => {
+                       return books.value.filter((book: any) => {
                         
                         
                         const lowerCaseSearch = search.value.toLowerCase();
@@ -196,17 +205,17 @@
                                 
                                 // Verifique se o nome ou a descrição do produto contém a string de pesquisa
                                 return (
-                                (product.nome.toLowerCase().includes(lowerCaseSearch) || product.nomeDoAutor.toLowerCase().includes(lowerCaseSearch)) &&
-                                (lowerCaseSelectedAuthor === '' || product.nomeDoAutor.toLowerCase() === lowerCaseSelectedAuthor) &&
-                                (SelectedRelease === '' || product.lancamento === SelectedRelease) &&
-                                (lowerCaseSelectedGender === '' || product.genero.toLowerCase() === lowerCaseSelectedGender) &&
-                                (lowerCasePublishingCompany === '' || product.editora.toLowerCase() === lowerCasePublishingCompany)
+                                (book.nome.toLowerCase().includes(lowerCaseSearch) || book.nomeDoAutor.toLowerCase().includes(lowerCaseSearch)) &&
+                                (lowerCaseSelectedAuthor === '' || book.nomeDoAutor.toLowerCase() === lowerCaseSelectedAuthor) &&
+                                (SelectedRelease === '' || book.lancamento === SelectedRelease) &&
+                                (lowerCaseSelectedGender === '' || book.genero.toLowerCase() === lowerCaseSelectedGender) &&
+                                (lowerCasePublishingCompany === '' || book.editora.toLowerCase() === lowerCasePublishingCompany)
                                 );
                        });
             });
 
-            const sortProducts = () => {
-            products.value.sort((a, b) => {
+            const sortBooks = () => {
+            books.value.sort((a, b) => {
                 const nomeA = a.nome.toLowerCase();
                 const nomeB = b.nome.toLowerCase();
                 if (nomeA < nomeB) return -1;
@@ -240,7 +249,7 @@
                 
                      
                                                                 
-                        products.value = data.data;
+                        books.value = data.data;
                      
           
                         } catch (error) {
@@ -275,7 +284,7 @@
                         data.value = await response.json();     
                         
                                         
-                        products.value = data.value.data;
+                        books.value = data.value.data;
                      
           
                         } catch (error) {
@@ -316,7 +325,7 @@
                         
                         
                                         
-                        products.value = data.data;
+                        books.value = data.data;
                      
           
                         } catch (error) {
@@ -335,7 +344,7 @@
     
            return{
             errorMessage,
-            products,
+            books,
             totalPaginas,
             goToPage,
             previousPage,
@@ -343,9 +352,9 @@
             loading,
             contador,
             search,
-            filteredProducts,
+            filteredBooks,
             role,
-            sortProducts,
+            sortBooks,
             uniqueAuthors,
             uniqueGender,
             uniqueRelease,
@@ -373,12 +382,12 @@
        font-weight: 700;
    }
 
-   #add-product {
+   #add-book {
        background-color:cadetblue;
        
    }
 
-   #add-product:hover {
+   #add-book:hover {
    color: #484848;
     
 }

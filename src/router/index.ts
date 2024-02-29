@@ -5,9 +5,9 @@ import Register from '../views/registerUser.vue';
 import Categories from '../views/categories/categoriesPage.vue';
 import editCategory from '../views/categories/editCategory.vue';
 import addCategory from '../views/categories/addCategory.vue';
-import Products from '../views/books/booksPage.vue';
-import editProduct from '@/views/books/editBook.vue';
-import addProduct from '@/views/books/addBook.vue';
+import Books from '../views/books/booksPage.vue';
+import editBook from '@/views/books/editBook.vue';
+import addBook from '@/views/books/addBook.vue';
 
 const routes = [
   { path: '/', component: Home},
@@ -36,22 +36,22 @@ const routes = [
     }
   },
   { 
-    path: '/products', 
-    name: 'products',
-    component: Products, 
+    path: '/books', 
+    name: 'books',
+    component: Books, 
   },
   { 
-    path: '/product/edit/:id', 
-    name: 'editProduct',
-    component: editProduct, 
+    path: '/book/edit/:id', 
+    name: 'editBook',
+    component: editBook, 
     beforeEnter: (to:any, from:any, next:any) => {
       guard(to, from, next);
     }
   },
   { 
-    path: '/product/add', 
-    name: 'addProduct',
-    component: addProduct, 
+    path: '/book/add', 
+    name: 'addBook',
+    component: addBook, 
     beforeEnter: (to:any, from:any, next:any) => {
       guard(to, from, next);
     }

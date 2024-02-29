@@ -50,6 +50,7 @@
           <p v-if="errors.password_confirmation" class="text-danger">{{ errors.password_confirmation }}</p>
         </div>
 
+        <p id="goregister"> Already have an account? <router-link to="/login" style="color: #333333;" aria-current="page" > click here </router-link></p>
         <button class="w-100 btn btn-lg btn-primary" type="submit" :disabled="loading">Register</button>
       </form>
       

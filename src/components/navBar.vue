@@ -18,10 +18,10 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0" v-if="token">
 
                   <li class="nav-item">
-                      <router-link to="/products" class="nav-link active" aria-current="page" > Products </router-link>
+                      <router-link to="/books" class="nav-link active" aria-current="page" > Books </router-link>
                     </li>
                     <li class="nav-item">
-                      <router-link to="/categories" class="nav-link active" aria-current="page" > Categories </router-link>
+                      <router-link to="/categories" v-if="role == 'admin'" class="nav-link active" aria-current="page" > Categories </router-link>
                     </li>
 <!--                     <li class="nav-item">
                       <router-link to="/" class="nav-link active" aria-current="page" > Profile </router-link>
@@ -53,10 +53,10 @@
                       <ul class="navbar-nav me-auto mb-2 mb-md-0" v-if="token">
 
                         <li class="nav-item">
-                            <router-link to="/products" class="nav-link active" style="color: #333333;" aria-current="page" > Products </router-link>
+                            <router-link to="/books" class="nav-link active" style="color: #333333;" aria-current="page" > Books </router-link>
                           </li>
                           <li class="nav-item">
-                            <router-link to="/categories" class="nav-link active" style="color: #333333;" aria-current="page" > Categories </router-link>
+                            <router-link to="/categories" v-if="role == 'admin'" class="nav-link active" style="color: #333333;" aria-current="page" > Categories </router-link>
                           </li>
                      <!--      <li class="nav-item">
                             <router-link to="/" class="nav-link active" style="color: #333333;" aria-current="page" > Profile </router-link>
@@ -88,48 +88,42 @@
     setup(){
 
       const token =ref<string | null>('');
+      const role = ref<string | null>('');
       const localStorageData = ref<string | null>('');
-      const url = ref<string | null>('');
+      const localStorageRole = ref<string | null>('');
+   
 
 
     onMounted(async () => {
      
       
       localStorageData.value = localStorage.getItem('token');
+      localStorageRole.value = localStorage.getItem('role');
 
-      if (localStorageData.value !== null) {
+   
+      
+
+      if (localStorageData.value !== null && localStorageRole.value !== null) {
        
         token.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
+        role.value = localStorageRole.value.replace(/^"(.*)"$/, '$1');
+
+        console.log( role.value );
+        
       }
    
     });
 
        const logout = async () => {
     
-             url.value = 'http://localhost/api/auth/logout';
-
-            try{
-
-                await fetch(url.value, {
-                    method: 'POST',
-                    headers: { 
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token.value}`, },
-                });
-
-                localStorage.removeItem('token' as string);
-
-            } catch (error) {
-        
-                console.error(error);
-            } 
-        
-        
+          localStorage.removeItem('token' as string);
+          localStorage.removeItem('user' as string);
+          localStorage.removeItem('role' as string);
       } 
 
       return{
         token,
+        role,
         logout
       }
     }

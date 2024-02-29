@@ -34,7 +34,8 @@
               <label for="floatingPassword">Password</label>
               <p v-if="errors.password" class="text-danger">{{ errors.password }}</p>
             </div>
-
+            
+            <p id="goregister">Don't have an account? <router-link to="/register" style="color: #333333;" aria-current="page" > click here </router-link></p>
             <button class="w-100 btn btn-lg btn-primary" type="submit" :disabled="loading">Entrar</button>
             
         </form>
@@ -168,6 +169,10 @@
    .btn {
     margin-top: 20px;
 
+  }
+
+  #goregister{
+   float: inline-end;
   }
 
 

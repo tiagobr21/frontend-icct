@@ -5,13 +5,19 @@
 
   <main class="form-sign w-100 m-auto">
 
+
+       <!-- Exibir mensagem de erro -->
+       <div v-if="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+       </div>
+
     
     <!-- Exibir mensagem de sucesso -->
 
-    <div class="welcome-container"  >
+    <div v-if="!errorMessage" class="welcome-container"  >
         <h1> Bem-Vindo!  {{ user }} </h1>
         <p>Vai ser uma honra trabalhar com você !!!</p>
-        <router-link to="/products" ><a  class="btn">Ir para lista de Livros</a></router-link>
+        <router-link to="/books" ><a  class="btn">Ir para lista de Livros</a></router-link>
     </div>
 
 
@@ -45,6 +51,10 @@
 
           if(localStorageData.value != null ){
             user.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
+          }else{
+            errorMessage.value = 'Seu token expirou faça login';
+             
+             
           }
     
        });

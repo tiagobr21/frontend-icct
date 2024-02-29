@@ -23,7 +23,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h4 class="pt-3">Add new Category</h4>
+        <h4 class="pt-3">Add new Book</h4>
       </div>
     </div>
 
@@ -31,38 +31,55 @@
       <div class="col-3"></div>
       <div class="col-md-6 px-5 px-md-0">
        <form>
-         
+
          <div class="form-group">
-           <label>Product Name</label>
+           <label>Name</label>
            <input v-model="data.nome" type="text" class="form-control" required>
            <p v-if="errors.nome" class="text-danger">{{ errors.nome }}</p>
          </div>
-         <div class="form-group">
-           <label>Product Description</label>
-           <input v-model="data.descricao" type="text" class="form-control" required>
-           <p v-if="errors.descricao" class="text-danger">{{ errors.descricao }}</p>
-         </div>
-         <div class="form-group">
-           <label>Product Price</label>
-           <input v-model="data.preco" type="text" class="form-control" required>
-           <p v-if="errors.preco" class="text-danger">{{ errors.preco }}</p>
-         </div>
-         <div class="form-group">
-           <label>Product Date Validity</label>
-           <input v-model="data.data_validade" type="text" class="form-control" required>
-           <p v-if="errors.data_validade" class="text-danger">{{ errors.data_validade }}</p>
-         </div>
-         <div class="form-group">
-           <label>Product Image</label>
-           <input @change="handleImageChange" type="file" class="form-control" required > 
-           <p v-if="errors.imagem" class="text-danger">{{ errors.imagem }}</p>
-         </div>
-         <div class="form-group">
-           <label>Product Cetegory ID</label>
-           <input v-model="data.categoria_id" type="text" class="form-control" required>
-           <p v-if="errors.categoria_id" class="text-danger">{{ errors.categoria_id }}</p>
-         </div>
          
+         <div class="form-group">
+           <label>Author</label>
+           <input v-model="data.nomeDoAutor" type="text" class="form-control" required>
+           <p v-if="errors.nomeDoAutor" class="text-danger">{{ errors.nomeDoAutor }}</p>
+         </div>
+
+         <div class="form-group">
+           <label>Release</label>
+           <input v-model="data.lancamento" type="text" class="form-control" required>
+           <p v-if="errors.lancamento" class="text-danger">{{ errors.lancamento }}</p>
+         </div>
+
+         <div class="form-group">
+           <label>Type</label>
+           <input v-model="data.tipo" type="text" class="form-control" required>
+           <p v-if="errors.tipo" class="text-danger">{{ errors.tipo }}</p>
+         </div>
+
+         <div class="form-group">
+           <label>Gender</label>
+           <input v-model="data.genero" type="text" class="form-control" required> 
+           <p v-if="errors.genero" class="text-danger">{{ errors.genero }}</p>
+         </div>
+
+         <div class="form-group">
+           <label>Publishing Company</label>
+           <input v-model="data.editora" type="text" class="form-control" required>
+           <p v-if="errors.editora" class="text-danger">{{ errors.editora }}</p>
+         </div>
+
+         <div class="form-group">
+          <label>Year Edition</label>
+          <input v-model="data.anoEdicao" type="text" class="form-control" required>
+          <p v-if="errors.anoEdicao" class="text-danger">{{ errors.anoEdicao }}</p>
+        </div>
+        
+        <div class="form-group">
+          <label>Number Edition</label>
+          <input v-model="data.numEdicao" type="text" class="form-control" required>
+          <p v-if="errors.numEdicao" class="text-danger">{{ errors.numEdicao }}</p>
+        </div>
+
          <button type="button" class="btn btn-primary" @click="add">Create</button>
        </form>
       </div>
@@ -75,13 +92,13 @@
 
 
   import navBar from '@/components/navBar.vue';
-  import {reactive,ref,onMounted} from 'vue';
+  import {reactive,ref} from 'vue';
   import axios from 'axios';
 
 export default {
   
   
-  name: 'addCategory',
+  name: 'addBook',
   components : {navBar},
 
   setup() {
@@ -97,64 +114,45 @@ export default {
    
     const data = reactive({
         nome:'',
-        descricao:'',
-        preco:'',
-        data_validade:'',
-        imagem:  null as File | null, 
-        categoria_id:'',
+        nomeDoAutor:'',
+        lancamento:'',
+        tipo:'',
+        genero: '', 
+        editora:'',
+        anoEdicao:'',
+        numEdicao: ''
       });
-
-    
-
-       function handleImageChange($event: Event) {
-            const target = $event.target as HTMLInputElement;
-            if (target && target.files) {
-              data.imagem = target.files[0];
-                 
-                
-            }
-        } 
-
-    
-
-    onMounted(async() => {
-
-    });
-
 
     const errors = reactive({
          nome:'',
-         descricao:'',
-         preco:'',
-         data_validade:'',
-         imagem: '', 
-         categoria_id:'',
+         nomeDoAutor:'',
+         lancamento:'',
+         tipo:'',
+         genero: '', 
+         editora:'',
+         anoEdicao:'',
+         numEdicao: ''
       });
 
       const validate = () => {
          errors.nome = data.nome.length > 0 ? '' : 'Name is required';
-         errors.descricao = data.descricao.length > 0 ? '' : 'Description is required';
-         errors.preco = data.preco.length > 0 ? '' : 'Price is required';
-         errors.data_validade = data.data_validade.length > 0 ? '' : 'Expiration Date is required';
-
-         errors.categoria_id = data.categoria_id.length > 0 ? '' : 'Category ID is required';
-
-           // Validar se a data_validade é menor que o dia atual
-            const currentDate = new Date();
-            const expirationDate = new Date(data.data_validade);
-            
-
-            if (expirationDate < currentDate) {
-              errors.data_validade = 'The expiration date must be greater than the current date';
-            } 
-
+         errors.nomeDoAutor = data.nomeDoAutor.length > 0 ? '' : 'Author is required';
+         errors.lancamento = data.lancamento.length > 0 ? '' : 'Release is required';
+         errors.tipo = data.tipo.length > 0 ? '' : 'Type Date is required';
+         errors.genero = data.genero.length > 0 ? '' : 'Gender Date is required';
+         errors.editora = data.editora.length > 0 ? '' : 'Publishing Company is required';
+         errors.anoEdicao = data.anoEdicao.length > 0 ? '' : 'Year Edition is required';
+         errors.numEdicao = data.numEdicao.length > 0 ? '' : 'Number Edition is required';
+         
          return (
             !errors.nome &&
-            !errors.descricao &&
-            !errors.preco &&
-            !errors.data_validade &&
-            !errors.imagem &&
-            !errors.categoria_id
+            !errors.nomeDoAutor &&
+            !errors.lancamento &&
+            !errors.tipo &&
+            !errors.genero &&
+            !errors.editora &&
+            !errors.anoEdicao &&
+            !errors.numEdicao
          );
       };
 
@@ -174,39 +172,39 @@ export default {
                token.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
       
                      
-            url.value = 'http://localhost/api/auth/produto/add';
+            url.value = 'http://localhost:3000/books/add';
           
             try {
 
             const headers = {
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token.value}`,
                   };
 
                   const dataToSend = {
                     nome: data.nome,
-                    descricao: data.descricao,
-                    preco: data.preco,
-                    data_validade: data.data_validade,
-                    categoria_id: data.categoria_id,
+                    nomeDoAutor: data.nomeDoAutor,
+                    lancamento: data.lancamento,
+                    tipo: data.tipo,
+                    genero: data.genero,
+                    editora: data.editora,
+                    anoEdicao: data.anoEdicao,
+                    numEdicao: data.numEdicao,
                   };
+
+                  // console.log(dataToSend);
+                  
 
                   const formData = new FormData();
 
                   Object.entries(dataToSend).forEach(([key, value]) => {
                     formData.append(key, value);
                   });
-            
-                  if (data.imagem instanceof Blob) {
-                        formData.append('imagem', data.imagem);
-                  }
-
-                  console.log(formData);
                   
 
                  const response = await axios.post(url.value, formData, { headers });
 
+                 
 
                    if (response.status == 200) {
 
@@ -244,7 +242,7 @@ export default {
       errorMessage,
       successMessage,
       loading,
-      handleImageChange
+
     }
      
 },
