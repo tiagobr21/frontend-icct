@@ -18,7 +18,7 @@
     
 3. **Iniciando o Ambiente Docker:**
 
-   * Após a instalação das dependências, inicie o serviço utilizando o seguinte comando para levantar o ambiente Docker:     
+  * Após a instalação das dependências, inicie o serviço utilizando o seguinte comando para levantar o ambiente Docker:     
 
      ```
      docker-compose up -d
