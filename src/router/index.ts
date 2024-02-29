@@ -2,9 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/homePage.vue';
 import Login from '../views/loginUser.vue';
 import Register from '../views/registerUser.vue';
-import Categories from '../views/categories/categoriesPage.vue';
-import editCategory from '../views/categories/editCategory.vue';
-import addCategory from '../views/categories/addCategory.vue';
+import Users from '../views/users/usersPage.vue';
+import editUser from '../views/users/editUser.vue';
 import Books from '../views/books/booksPage.vue';
 import editBook from '@/views/books/editBook.vue';
 import addBook from '@/views/books/addBook.vue';
@@ -14,27 +13,20 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   {
-    path: '/categories',
-    name: 'categories',
-    component: Categories,
+    path: '/users',
+    name: 'users',
+    component: Users,
 
   },
   {
-    path: '/category/edit/:id',
-    name:"editCategory",
-    component: editCategory,
+    path: '/user/edit/:id',
+    name:"editUser",
+    component: editUser,
     beforeEnter: (to:any, from:any, next:any) => {
       guard(to, from, next);
     }
   },
-  {
-    path: '/category/add',
-    name:"addCategory",
-    component: addCategory,
-    beforeEnter: (to:any, from:any, next:any) => {
-      guard(to, from, next);
-    }
-  },
+  
   { 
     path: '/books', 
     name: 'books',
@@ -57,22 +49,6 @@ const routes = [
     }
   }
 ];
-
-
-/* {
-  path: '/category',
-  name: 'category',
-  component: Category,
-  children: [
-      {
-         path: 'subcategory',
-         name: 'subCategory',
-         component: ChildComponent,
-      },
-      // other nested routes
-  ]
-},
- */
 
 
 const router = createRouter({

@@ -21,7 +21,7 @@
                       <router-link to="/books" class="nav-link active" aria-current="page" > Books </router-link>
                     </li>
                     <li class="nav-item">
-                      <router-link to="/categories" v-if="role == 'admin'" class="nav-link active" aria-current="page" > Categories </router-link>
+                      <router-link to="/users" v-if="role == 'admin'" class="nav-link active" aria-current="page" > Users </router-link>
                     </li>
 <!--                     <li class="nav-item">
                       <router-link to="/" class="nav-link active" aria-current="page" > Profile </router-link>
@@ -56,7 +56,7 @@
                             <router-link to="/books" class="nav-link active" style="color: #333333;" aria-current="page" > Books </router-link>
                           </li>
                           <li class="nav-item">
-                            <router-link to="/categories" v-if="role == 'admin'" class="nav-link active" style="color: #333333;" aria-current="page" > Categories </router-link>
+                            <router-link to="/users" v-if="role == 'admin'" class="nav-link active" style="color: #333333;" aria-current="page" > Users </router-link>
                           </li>
                      <!--      <li class="nav-item">
                             <router-link to="/" class="nav-link active" style="color: #333333;" aria-current="page" > Profile </router-link>

@@ -26,7 +26,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
-                <h4 class="pt-3">Edit Category</h4>
+                <h4 class="pt-3">Edit User</h4>
                 </div>
             </div>
         
@@ -36,8 +36,8 @@
 
                 <form>
                     <div class="form-group">
-                    <label>Category Name</label>
-                    <input type="text" class="form-control" v-model="data.categoria"  required>
+                    <label>User Name</label>
+                    <input type="text" class="form-control" v-model="data.user"  required>
                     </div>
             <!--       <div class="form-group">
                     <label>Description</label>
@@ -67,7 +67,7 @@
     
 
   export default {
-    name: 'editCategory',
+    name: 'editUser',
     components : {navBar},
 
     setup() {
@@ -82,7 +82,7 @@
       const route = useRoute();
   
       const data = reactive({
-          categoria: '',
+          user: '',
    
       });
 
@@ -96,7 +96,7 @@
         token.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
         
                 
-        url.value= 'http://localhost/api/auth/categoria/'+ route.params.id;
+        url.value= 'http://localhost/api/auth/user/'+ route.params.id;
                 
         try{
                 
@@ -109,12 +109,12 @@
                 },
             });
 
-            const category = await response.json();
+            const user = await response.json();
 
-           data.categoria = category[0].categoria
+           data.user = user[0].user
             
                     
-            successMessage.value = category.message;
+            successMessage.value = user.message;
             
             
             } catch (error) {
@@ -135,7 +135,7 @@
          
            loading.value = true; // Ativa o spinner
            
-           url.value = 'http://localhost/api/auth/categoria/edit/'+ route.params.id;
+           url.value = 'http://localhost/api/auth/user/edit/'+ route.params.id;
            
            try {
 

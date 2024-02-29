@@ -17,21 +17,21 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
-                <h4 class="pt-3">Our Categories</h4>
+                <h4 class="pt-3">Our USers</h4>
                 
                 <div v-if="role == 'admin'">
-                    <router-link id="add-category" to="/category/add" >
-                        <button class="btn">Add a new Category</button>
+                    <router-link id="add-user" to="/register" >
+                        <button class="btn">Add a new User</button>
                     </router-link>
                 </div>
 
             </div>
         </div>
         <div class="row">
-           <div v-for="category of filteredCategories" :key="category.id" class="col-md-6 col-xl-4 col-12 pt-3  justify-content-around d-flex">
+           <div v-for="user of filteredUSers" :key="user.id" class="col-md-6 col-xl-4 col-12 pt-3  justify-content-around d-flex">
             
-                <categoryBox :category="category">
-                </categoryBox>
+                <userBox :user="user">
+                </userBox>
             </div> 
         </div>
     </div>
@@ -48,15 +48,15 @@
 
 <script lang="ts">
 
-    import categoryBox from '../../components/category/categoryBox.vue';
+    import userBox from '../../components/user/userBox.vue';
     import navBar from '@/components/navBar.vue';
     import{onMounted,ref,computed } from 'vue';
 
 
     export default {
-        name: 'categoriesPage',
+        name: 'usersPage',
 
-        components : {navBar,categoryBox},
+        components : {navBar,userBox},
       
         setup(){
              
@@ -65,7 +65,7 @@
              const url = ref<string | null>('');
              const localStorageData = ref<string | null>('');
              const token = ref<string | null>('');
-             const categories = ref<any[]>([]);
+             const users = ref<any[]>([]);
              let totalPaginas = ref<number>(0);
              const contador = ref<number>(0);
              const data = ref<any | null>('');
@@ -84,7 +84,7 @@
  
                role.value = role.value.replace(/^"(.*)"$/, '$1');
                      
-               url.value= 'http://localhost/api/auth/categoria';
+               url.value= 'http://localhost:3000/user';
                      
                try{
                        
@@ -103,7 +103,7 @@
                    totalPaginas.value = Math.ceil(data[0].total/data[0].per_page);
                 
                                                   
-                   categories.value = data[0].data;
+                   users.value = data[0].data;
 
               
  
@@ -119,12 +119,12 @@
             });
 
 
-            const filteredCategories = computed(() => {
-                        // Use a função filter para filtrar as categorias com base na pesquisa
-                        return categories.value.filter((category: any) => {
+            const filteredUSers = computed(() => {
+                        // Use a função filter para filtrar as users com base na pesquisa
+                        return users.value.filter((user: any) => {
                             // Aqui você pode ajustar a lógica de filtro conforme necessário
-                            // Neste exemplo, estamos verificando se o nome da categoria contém a string de pesquisa
-                            return category.categoria.toLowerCase().includes(search.value.toLowerCase());
+                            // Neste exemplo, estamos verificando se o nome da user contém a string de pesquisa
+                            return user.user.toLowerCase().includes(search.value.toLowerCase());
                         });
                     });
 
@@ -137,7 +137,7 @@
                    contador.value = page;
                     
                             
-                 url.value= 'http://localhost/api/auth/categoria?page='+ contador.value;
+                 url.value= 'http://localhost/api/auth/user?page='+ contador.value;
                      
                      try{
                              
@@ -153,7 +153,7 @@
                          const data = await response.json();     
                       
                                                                  
-                         categories.value = data[0].data;
+                         users.value = data[0].data;
                       
            
                          } catch (error) {
@@ -172,7 +172,7 @@
                  if (contador.value > 1) {
                     contador.value--;
                     
-                    url.value= 'http://localhost/api/auth/categoria?page='+ contador.value;
+                    url.value= 'http://localhost/api/auth/user?page='+ contador.value;
                      
                      try{
                              
@@ -188,7 +188,7 @@
                          data.value = await response.json();     
                          
                                          
-                         categories.value = data.value[0].data;
+                         users.value = data.value[0].data;
                       
            
                          } catch (error) {
@@ -207,7 +207,7 @@
                     
                     contador.value++;
                       
-                    url.value= 'http://localhost/api/auth/categoria?page='+ contador.value;
+                    url.value= 'http://localhost/api/auth/user?page='+ contador.value;
                      
                      try{
                              
@@ -223,7 +223,7 @@
                          const data = await response.json();     
                          
                                          
-                         categories.value = data[0].data;
+                         users.value = data[0].data;
                       
            
                          } catch (error) {
@@ -242,14 +242,14 @@
      
             return{
              errorMessage,
-             categories,
+             users,
              totalPaginas,
              goToPage,
              previousPage,
              nextPage,
              contador,
              search,
-             filteredCategories,
+             filteredUSers,
              role
             }
 
@@ -268,7 +268,7 @@
         font-weight: 700;
     }
 
-    #add-category {
+    #add-user {
       
         font-weight: 500;
     }

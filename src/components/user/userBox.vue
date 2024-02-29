@@ -4,20 +4,20 @@
 
     <div class="card h-100">
       <div class="embed-responsive embed-responsive-16by9">
-        <!-- <img class="card-img-top embed-responsive-item" :src="category.imageUrl" alt="Category Image"> -->
+        <!-- <img class="card-img-top embed-responsive-item" :src="user.imageUrl" alt="User Image"> -->
       </div>
   
       <div class="card-body">
-        <h5 class="card-title">{{category.categoria}}</h5>
-        <div v-if="role == 'admin'" id="actions-category">
-          <router-link :to="{ name: 'editCategory', params: { id : category.id } }" >
+        <h5 class="card-title">{{user.user}}</h5>
+        <div v-if="role == 'admin'" id="actions-user">
+          <router-link :to="{ name: 'editUser', params: { id : user.id } }" >
                 <fa icon="pen-square"></fa>
           
           </router-link> <br>
-   <!--        <router-link to="/categories" >
-               <div class="delete"> <fa @click="deleteCategory(category.id)" icon="trash"></fa> </div>
+         <router-link to="/users" >
+               <div class="delete"> <fa @click="deleteUser(user.id)" icon="trash"></fa> </div>
 
-          </router-link > -->
+          </router-link >
         </div>
 
 
@@ -33,8 +33,8 @@
 
   export default {
 
-      name : "categoryBox",
-      props : ["category"],
+      name : "userBox",
+      props : ["user"],
 
       
       
@@ -66,12 +66,12 @@
       });
 
 
-    const deleteCategory = async (id:any) =>{
+    const deleteUser = async (id:any) =>{
         
         
         loading.value = true; // Ativa o spinner
         
-        url.value = 'http://localhost/api/auth/categoria/delete/'+id;
+        url.value = 'http://localhost/api/auth/user/delete/'+id;
         
         try {
 
@@ -116,7 +116,7 @@
 
 
     return{
-      deleteCategory,
+      deleteUser,
       errorMessage,
       successMessage,
       loading,
@@ -160,7 +160,7 @@
     font-size: 0.9rem;
   }
   
-  #actions-category {
+  #actions-user {
     float: right;
     display: block;
     margin-left: 10px;
