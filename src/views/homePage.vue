@@ -15,9 +15,9 @@
     <!-- Exibir mensagem de sucesso -->
 
     <div v-if="!errorMessage" class="welcome-container"  >
-        <h1> Bem-Vindo!  {{ user }} </h1>
-        <p>Vai ser uma honra trabalhar com você !!!</p>
-        <router-link to="/books" ><a  class="btn">Ir para lista de Livros</a></router-link>
+        <h1> Welcome!  {{ user }} </h1>
+        <p> It will be an honor to work with you! !!!</p>
+        <router-link to="/books" ><a  class="btn">Go to book list</a></router-link>
     </div>
 
 

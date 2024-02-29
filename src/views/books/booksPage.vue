@@ -10,7 +10,7 @@
       </div>
 
    <div class="search-container">
-       <input type="search" v-model="search" class="search-input" placeholder="Pesquisar...">
+       <input type="search" v-model="search" class="search-input" placeholder="Search...">
        <fa class="search-icon" icon="search"></fa>
    </div>
         
