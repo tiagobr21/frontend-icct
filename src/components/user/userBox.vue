@@ -1,14 +1,17 @@
 <template>
 
 
-
     <div class="card h-100">
       <div class="embed-responsive embed-responsive-16by9">
         <!-- <img class="card-img-top embed-responsive-item" :src="user.imageUrl" alt="User Image"> -->
       </div>
   
       <div class="card-body">
-        <h5 class="card-title">{{user.user}}</h5>
+        <h5 class="card-title"><strong>ID: </strong>{{user.id}}</h5>
+        <h5 class="card-title"><strong>Name: </strong>{{user.name}}</h5>
+        <h5 class="card-title"><strong>Email: </strong>{{user.email}}</h5>
+        <h5 class="card-title"><strong>Role: </strong>{{user.role}}</h5>
+   
         <div v-if="role == 'admin'" id="actions-user">
           <router-link :to="{ name: 'editUser', params: { id : user.id } }" >
                 <fa icon="pen-square"></fa>
@@ -71,7 +74,7 @@
         
         loading.value = true; // Ativa o spinner
         
-        url.value = 'http://localhost/api/auth/user/delete/'+id;
+        url.value = 'http://localhost:3000/user/'+id;
         
         try {
 

@@ -37,16 +37,19 @@
                 <form>
                     <div class="form-group">
                     <label>User Name</label>
-                    <input type="text" class="form-control" v-model="data.user"  required>
+                    <input type="text" class="form-control" v-model="data.user.name"  required>
                     </div>
-            <!--       <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" class="form-control" v-model="description" required>
+                 <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" v-model="data.user.email" required>
                     </div>
                     <div class="form-group">
-                    <label>ImageURL</label>
-                    <input type="url" class="form-control" v-model="imageUrl" required>
-                    </div> -->
+                    <label>Role</label>
+                    <select class="form-control" v-model="data.user.role" required>
+                      <option value="admin">admin</option>
+                      <option value="user">user</option>
+                    </select>
+                    </div> 
                     <button type="button" class="btn btn-primary"  @click="update"> Update</button>
                 </form>
 
@@ -79,10 +82,12 @@
       const token = ref<string | null>('');
       const loading = ref<boolean | null>(false);
 
+
       const route = useRoute();
   
+       
       const data = reactive({
-          user: '',
+          user: [],
    
       });
 
@@ -96,7 +101,7 @@
         token.value = localStorageData.value.replace(/^"(.*)"$/, '$1');
         
                 
-        url.value= 'http://localhost/api/auth/user/'+ route.params.id;
+        url.value= 'http://localhost:3000/user/'+ route.params.id;
                 
         try{
                 
@@ -111,8 +116,7 @@
 
             const user = await response.json();
 
-           data.user = user[0].user
-            
+            data.user = user
                     
             successMessage.value = user.message;
             
@@ -125,7 +129,11 @@
 
             } 
         
-        }
+        }else{
+                    errorMessage.value = 'Seu token expirou faça login';
+                    successMessage.value = ''; // Limpar mensagem de sucesso
+                    loading.value = false;
+              }
 
       });
 
@@ -134,19 +142,24 @@
            
          
            loading.value = true; // Ativa o spinner
+
            
-           url.value = 'http://localhost/api/auth/user/edit/'+ route.params.id;
+           console.log(data);
+           
+           url.value = 'http://localhost:3000/user/'+ route.params.id;
            
            try {
 
             const response = await fetch(url.value, {
-                  method: 'PUT',
+                  method: 'PATCH',
                   headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token.value}` 
                 },
                   body: JSON.stringify(data),
                 });
+
+                
 
                if (response.ok) {
                  
@@ -166,7 +179,7 @@
            } catch (error) {
              
              console.error(error);
-             errorMessage.value = 'Algo deu errado ou o token expirou';
+             errorMessage.value = 'Algo deu errado';
              successMessage.value = ''; // Limpar mensagem de sucesso
 
            } finally {

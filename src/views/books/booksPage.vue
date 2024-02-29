@@ -322,9 +322,7 @@
                         const data = await response.json();    
                         
                     
-                        
-                        
-                                        
+                
                         books.value = data.data;
                      
           
