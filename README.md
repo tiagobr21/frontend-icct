@@ -3,7 +3,7 @@
   * Para clonar o projeto execute o seguinte comando:
 
     ```
-     git clone git@github.com:tiagobr21/frontend-icct.git
+     git clone https://github.com/tiagobr21/frontend-icct.git
 
      ```
 
